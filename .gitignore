@@ -1,0 +1,6 @@
+/LOG_PATH_IS_UNDEFINED/
+/target/
+.settings
+.svn
+.project
+.classpath

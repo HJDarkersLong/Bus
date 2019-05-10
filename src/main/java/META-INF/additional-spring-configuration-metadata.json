@@ -1,0 +1,62 @@
+{"properties": [
+  {
+    "name": "mybatis.typeAliasesPackage",
+    "type": "java.lang.String",
+    "description": "A description for 'mybatis.typeAliasesPackage'"
+  },
+  {
+    "name": "mybatis.mapperLocations",
+    "type": "java.lang.String",
+    "description": "A description for 'mybatis.mapperLocations'"
+  },
+  {
+    "name": "login_url",
+    "type": "java.lang.String",
+    "description": "A description for 'login_url'"
+  },
+  {
+    "name": "userInfo_url",
+    "type": "java.lang.String",
+    "description": "A description for 'userInfo_url'"
+  },
+  {
+    "name": "managerInfo_url",
+    "type": "java.lang.String",
+    "description": "A description for 'managerInfo_url'"
+  },
+  {
+    "name": "addressInfo_url",
+    "type": "java.lang.String",
+    "description": "A description for 'addressInfo_url'"
+  },
+  {
+    "name": "appID",
+    "type": "java.lang.String",
+    "description": "A description for 'appID'"
+  },
+  {
+    "name": "token",
+    "type": "java.lang.String",
+    "description": "A description for 'token'"
+  },
+  {
+    "name": "h5_url",
+    "type": "java.lang.String",
+    "description": "A description for 'h5_url'"
+  },
+  {
+    "name": "h5_url",
+    "type": "java.lang.String",
+    "description": "A description for 'h5_url'"
+  },
+  {
+    "name": "channel_token",
+    "type": "java.lang.String",
+    "description": "A description for 'channel_token'"
+  },
+  {
+    "name": "addressInfo_url",
+    "type": "java.lang.String",
+    "description": "A description for 'addressInfo_url'"
+  }
+]}

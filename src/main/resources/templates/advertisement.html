@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>手机回收</title>
+</head>
+<body>
+<img src="https://xk.xianxiankj.com/ad.jpg">
+<button id="btn"  class="button">跳过&nbsp;(<span id="mes">3</span>)</button>
+</body>
+<script language="javascript" type="text/javascript">
+    var i = 3;
+    var intervalid;
+    intervalid = setInterval("fun()", 1000);
+    function fun() {
+        if (i == 0) {
+            document.getElementById("btn").click()
+            clearInterval(intervalid);
+        }
+        document.getElementById("mes").innerHTML = i;
+        i--;
+    }
+
+    var oBtn = document.getElementById('btn');
+    oBtn.onclick = function(){
+        /* window.location.href= "https://cai.omr.sosotec.com/app.html?user_token=[[${channel_token}]]" */
+        // window.location.href= "https://xk.xianxiankj.com/recover/login/toRecover?source=[[${source}]]&channel_token=[[${channel_token}]]"
+    };
+
+</script>
+</html>
+<style>
+ /* body{
+   background:url("https://xk.xianxiankj.com/ad.jpg")  no-repeat center center;
+   background-size:cover;
+   background-attachment:fixed;
+   background-color:#CCCCCC;
+} */
+img{
+		position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	width:100%;
+	margin:auto;
+	z-index: -1;
+	*zoom:1;
+
+	}
+    .button{
+        font-size: 25px;
+        width: 120px;
+        height: 60px;
+        border-radius: 30px 30px 30px 30px;
+        background: none;
+        color: white;
+        border-width: 3px;
+        margin-left: 720px;
+        margin-top: 1250px;
+    }
+
+
+</style>
