@@ -104,9 +104,10 @@ public class LoginController {
 			flagMessage = "success";
 			hintMessage = "登录成功";
 			jsonObject.put("role",user.getRole());
+			jsonObject.put("nickname",user.getNickname());
 		}else {
 			flagMessage = "fail";
-			hintMessage = "登录失败";
+			hintMessage = "用户名或密码错误";
 		}
 		
 		jsonObject.put("flag",flagMessage);

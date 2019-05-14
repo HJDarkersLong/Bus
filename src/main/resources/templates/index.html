@@ -31,11 +31,10 @@
                 <p style="font-size: 5px">员工</p>
             </div>
             <input type="text" name="username" id="username" placeholder="请输入您的工号"/>
-            <input type="text" name="nickname"
-                   id="nickname" placeholder="姓名"/> <input type="password"
-                                                           name="password" id="password" placeholder="密码"/> <input
-                type="password" id="rppassword" placeholder="重复密码"/> <input
-                id="register" type="button" class="action-button" value="注册"/> </br>
+            <input type="text" name="nickname" id="nickname" placeholder="姓名"/>
+            <input type="password" name="password" id="password" placeholder="密码"/> 
+            <input type="password" id="rppassword" placeholder="重复密码"/> 
+            <input id="register" type="button" class="action-button" value="注册"/> </br>
             <a id="next" name="next" class="next " style="font-size: 5px">已有账号？去登录</a>
         </fieldset>
         <fieldset>
@@ -133,12 +132,16 @@
             success: function (data) {
                 if (data != null) {
                      console.log(data)
+                     debugger
                     // alert('flag : ' + data.flag + " , hintMessage : " + data.hintMessage);
-                    if (data.flag = 'success') {
-                        alert(data.hintMessage)
+                    if (data.flag === 'success') {
+                        /* alert(data.hintMessage) */
                         window.localStorage.setItem('username',loginusername)
                         window.localStorage.setItem('role',data.role)
+                        window.localStorage.setItem('nickname',data.nickname)
                         window.location.href="toHome"
+                    }else{
+                    	alert(data.hintMessage)
                     }
                 }
             }

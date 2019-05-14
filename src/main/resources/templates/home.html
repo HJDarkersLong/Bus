@@ -11,10 +11,48 @@
 </head>
 <body>
 <article class="htmleaf-content">
-	<div style="float:left">
-		<p id ="username"></p>
-	    <p id ="role"></p>
+	<div >
+		<p style="margin-left: 33px; color: mediumseagreen; font-size: 18px;">欢迎您:</p>
+		<p style="display:inline;margin-left: 33px; color: mediumseagreen; font-size: 18px;" id ="username"></p>
+	    <!-- <p style="display:inline" id ="role"></p> -->
 	</div>
+	<form id="msform" >
+		<fieldset style="width: 90%; height: 500px;  /* height: 59%; */ margin: 0 5%;">
+            <h2 class="fs-title">预约详情</h2>
+            <h3 class="fs-subtitle">以下仅显示您最近10次的预约情况</h3>
+            <table style="border-style:dashed; border-width:1px; border-color:#74777b;width: 100%; font-size: 15px;" id="showDataId">
+            
+            </table>
+            <input id="register" type="button" class=" next action-button" value="我要预约"/> </br>
+        </fieldset>
+        <fieldset >
+            <h2 class="fs-title">预约</h2>
+            <h3 class="fs-subtitle">请选择您要预约的车次</h3>
+            <div style="display: flex;" >
+                <input style="display: block; width: 15px; margin-left: 50px"
+                       name="role" type="radio" value="0"/>
+                <p style="font-size: 7px;margin-left: 16px">5.14-东莞-->深圳_10:00</p>
+            </div>
+            <div style="display: flex;" >
+                <input style="display: block; width: 15px; margin-left: 50px"
+                       name="role" type="radio" value="1"/>
+                <p style="font-size: 7px;margin-left: 16px">5.14-深圳-->东莞_10:00</p>
+            </div>
+            <div style="display: flex;" >
+                <input style="display: block; width: 15px; margin-left: 50px"
+                       name="role" type="radio" value="0"/>
+                <p style="font-size: 7px;margin-left: 16px">5.15-东莞-->深圳_10:00</p>
+            </div>
+            <div style="display: flex;" >
+                <input style="display: block; width: 15px; margin-left: 50px"
+                       name="role" type="radio" value="1"/>
+                <p style="font-size: 7px;margin-left: 16px">5.15-深圳-->东莞_10:00</p>
+            </div>
+            <input type="password" name="password" id="password" placeholder="密码"/> 
+            <input  type="button" class=" previous action-button" value="返回"/>
+            <input  type="button" class="  action-button" value="预约"/> </br>
+        </fieldset>
+    </form>
    </article>
 
 <script th:src="@{/js/jquery-2.1.1.min.js}"></script>
@@ -22,15 +60,133 @@
 <script>
 	var username = window.localStorage.getItem('username')
 	var role = window.localStorage.getItem('role')
+	var nickname = window.localStorage.getItem('nickname')
+	if((null == username || "undefined" == username || "" == username)  ||
+	   (null == role || "undefined" == role || "" == role) 	||
+	   (null == nickname || "undefined" == nickname || "" == nickname)){
+		debugger
+		alert("您未登录，请先登录")
+		window.location.href="toIndex"
+	}
 	if(role === "1"){
 		role = "员工"	
 	}else if (role ==="0") {
 		role = "业主"
 	}
+	document.getElementById("username").innerHTML="工号:"+username+role+nickname
+	/* document.getElementById("role").innerHTML='角色：'+role */
+	$.ajax({
+                url: '/bus/order/selectByUserId',
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: username,
+                async: false,
+                success: function (data) {
+                    if (data != null) {
+                         console.log(data)
+                        if (data.flag = 'success') {
+                            var inf = "<table class='table'>";
+                            inf += "<tr style='height:30px'><th>车次</th><th>状态</th><th>操作</th></tr>";
+                            for(var i=0;i<data.list.length;i++){
+                            	var stu = data.list[i];
+                            	stu.cancel = ''
+                            	switch (stu.status){
+                            	case '0':stu.status = '已取消'; break;
+                            	case '1':stu.status = '已预约'; stu.cancel = '取消预约' ;break;
+                            	case '2':stu.status = '已发车'; break;
+                            	}
+                            	inf +="</td><td>" + stu.bus_info_name + "</td><td>" + stu.status+ "</td><td>"+"<a href='javascript:;' onclick='cancelOrder("+stu.id+")'>"+stu.cancel+"</a>"+"</td></tr>";
+                            }
+                            inf+="</table>";
+                            $("#showDataId").html(inf);
+                        }
+                    }
+                }
+            });
 	
-	document.getElementById("username").innerHTML='用户名：'+username
-	document.getElementById("role").innerHTML='角色：'+role
+	var current_fs, next_fs, previous_fs;
+    var left, opacity, scale;
+    var animating;
+    $('.next').click(function () {
+        if (animating)
+            return false;
+        animating = true;
+        current_fs = $(this).parent();
+        next_fs = $(this).parent().next();
+        $('#progressbar li').eq($('fieldset').index(next_fs)).addClass('active');
+        next_fs.show();
+        current_fs.animate({opacity: 0}, {
+            step: function (now, mx) {
+                scale = 1 - (1 - now) * 0.2;
+                left = now * 50 + '%';
+                opacity = 1 - now;
+                current_fs.css({'transform': 'scale(' + scale + ')'});
+                next_fs.css({
+                    'left': left,
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            easing: 'easeInOutBack'
+        });
+    });
+    
+    $('.previous').click(function () {
+        if (animating)
+            return false;
+        animating = true;
+        current_fs = $(this).parent();
+        previous_fs = $(this).parent().prev();
+        $('#progressbar li').eq($('fieldset').index(current_fs)).removeClass('active');
+        previous_fs.show();
+        current_fs.animate({opacity: 0}, {
+            step: function (now, mx) {
+                scale = 0.8 + (1 - now) * 0.2;
+                left = (1 - now) * 50 + '%';
+                opacity = 1 - now;
+                current_fs.css({'left': left});
+                previous_fs.css({
+                    'transform': 'scale(' + scale + ')',
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            easing: 'easeInOutBack'
+        });
+    });
+	
+	function cancelOrder(orderId) {
+		$.ajax({
+            url: '/bus/order/cancelOrder/'+orderId,
+            type: 'get',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: orderId,
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                     console.log(data)
+                    if (data.flag = 'success') {
+                    	alert(data.hintMessage)
+                    	window.location.reload()
+                    }
+                }
+            }
+        });
+	}
 	
 </script>
+<style type="text/css"> 
+	table tr{height:30px} 
+</style> 
 </body>
 </html>
