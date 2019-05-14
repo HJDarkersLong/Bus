@@ -27,30 +27,9 @@
         </fieldset>
         <fieldset >
             <h2 class="fs-title">预约</h2>
-            <h3 class="fs-subtitle">请选择您要预约的车次</h3>
-            <div style="display: flex;" >
-                <input style="display: block; width: 15px; margin-left: 50px"
-                       name="role" type="radio" value="0"/>
-                <p style="font-size: 7px;margin-left: 16px">5.14-东莞-->深圳_10:00</p>
-            </div>
-            <div style="display: flex;" >
-                <input style="display: block; width: 15px; margin-left: 50px"
-                       name="role" type="radio" value="1"/>
-                <p style="font-size: 7px;margin-left: 16px">5.14-深圳-->东莞_10:00</p>
-            </div>
-            <div style="display: flex;" >
-                <input style="display: block; width: 15px; margin-left: 50px"
-                       name="role" type="radio" value="0"/>
-                <p style="font-size: 7px;margin-left: 16px">5.15-东莞-->深圳_10:00</p>
-            </div>
-            <div style="display: flex;" >
-                <input style="display: block; width: 15px; margin-left: 50px"
-                       name="role" type="radio" value="1"/>
-                <p style="font-size: 7px;margin-left: 16px">5.15-深圳-->东莞_10:00</p>
-            </div>
-            <input type="password" name="password" id="password" placeholder="密码"/> 
+            <h3 class="fs-subtitle bus">请选择您要预约的车次</h3>
             <input  type="button" class=" previous action-button" value="返回"/>
-            <input  type="button" class="  action-button" value="预约"/> </br>
+            <input  type="button" class="  action-button save" value="预约"/> </br>
         </fieldset>
     </form>
    </article>
@@ -87,7 +66,7 @@
                          console.log(data)
                         if (data.flag = 'success') {
                             var inf = "<table class='table'>";
-                            inf += "<tr style='height:30px'><th>车次</th><th>状态</th><th>操作</th></tr>";
+                            inf += "<tr style='height:30px'><th>车次</th><th>日期</th><th>发车时间</th><th>状态</th><th>操作</th></tr>";
                             for(var i=0;i<data.list.length;i++){
                             	var stu = data.list[i];
                             	stu.cancel = ''
@@ -96,7 +75,7 @@
                             	case '1':stu.status = '已预约'; stu.cancel = '取消预约' ;break;
                             	case '2':stu.status = '已发车'; break;
                             	}
-                            	inf +="</td><td>" + stu.bus_info_name + "</td><td>" + stu.status+ "</td><td>"+"<a href='javascript:;' onclick='cancelOrder("+stu.id+")'>"+stu.cancel+"</a>"+"</td></tr>";
+                            	inf +="<tr><td>" + stu.bus_info_name + "</td><td>" + stu.order_date + "</td><td>" + stu.open_time + "</td><td>" + stu.status+ "</td><td>"+"<a href='javascript:;' onclick=cancelOrder('"+stu.id+"')>"+stu.cancel+"</a>"+"</td></tr>";
                             }
                             inf+="</table>";
                             $("#showDataId").html(inf);
@@ -104,6 +83,31 @@
                     }
                 }
             });
+
+
+    $.ajax({
+        url: '/bus/order/getBusInfo',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: username,
+        async: false,
+        success: function (data) {
+            if (data != null) {
+                console.log(data)
+                if (data.code = '1') {
+                    var shtml="";
+                    for(var i=0;i<data.buslist.length;i++){
+                        var bus=data.buslist[i];
+                       shtml+="<div style='display: flex;' >" +
+                           " <input style='display: block; width: 15px; margin-left: 50px' name='role' type='radio' value='0' busid='"+bus.id+"'orderDate='"+bus.orderDate+"'busname='"+bus.name+"'opentime='"+bus.open_time+"'>" +
+                           "<p style='font-size: 7px;margin-left: 16px'>"+bus.orderDate+" - "+bus.name+" - "+bus.open_time+"</p></div>";
+                    }
+                    $(".bus").after(shtml);
+                }
+            }
+        }
+    });
 	
 	var current_fs, next_fs, previous_fs;
     var left, opacity, scale;
@@ -183,7 +187,43 @@
             }
         });
 	}
-	
+	$(".save").click(function(){
+        var order=$("input[type='radio']:checked");
+        var busid=order.attr("busid");
+        var orderDate=order.attr("orderDate");
+        var bus_info_name=order.attr("busname");
+        var opentime=order.attr("opentime");
+        var userid=localStorage.getItem("userid");
+        $.ajax({
+            url: '/bus/order/saveOrder',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({bus_info_id:busid,order_date:orderDate,userId:userid,bus_info_name:bus_info_name,open_time:opentime}),
+            async: false,
+            success: function (data) {
+                if (data != null) {
+                    console.log(data)
+                    if (data.code == '-2') {
+                        alert("您已经预约过了该趟车次")
+                        return false;
+                    }
+                    if (data.code == '-1') {
+                        alert("该趟车次已经预约满员了")
+                        return false;
+                    }
+                    if (data.code ==-3) {
+                        alert("预约失败")
+                        return false;
+                    }
+                    if (data.code == 1) {
+                        alert("预约成功")
+                        window.location.href="toHome";
+                    }
+                }
+            }
+        });
+    })
 </script>
 <style type="text/css"> 
 	table tr{height:30px} 

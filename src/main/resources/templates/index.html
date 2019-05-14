@@ -137,6 +137,7 @@
                     if (data.flag === 'success') {
                         /* alert(data.hintMessage) */
                         window.localStorage.setItem('username',loginusername)
+                        window.localStorage.setItem('userid',data.id)
                         window.localStorage.setItem('role',data.role)
                         window.localStorage.setItem('nickname',data.nickname)
                         window.location.href="toHome"

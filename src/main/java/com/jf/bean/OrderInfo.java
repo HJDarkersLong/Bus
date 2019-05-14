@@ -33,7 +33,13 @@ public class OrderInfo {
 	 */
 	@Column(length = 128)
 	private String userId;
-	
+
+	@Column(length = 128)
+	private String order_date;
+
+	@Column(length = 128)
+	private String open_time;
+
 	private String username;
 	
 	private String nickname;
@@ -142,5 +148,21 @@ public class OrderInfo {
 
 	public void setCreateTime(Timestamp createTime) {
 		this.createtime = createTime;
+	}
+
+	public String getOrder_date() {
+		return order_date;
+	}
+
+	public void setOrder_date(String order_date) {
+		this.order_date = order_date;
+	}
+
+	public String getOpen_time() {
+		return open_time;
+	}
+
+	public void setOpen_time(String open_time) {
+		this.open_time = open_time;
 	}
 }

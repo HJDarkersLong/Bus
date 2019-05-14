@@ -9,7 +9,7 @@ import com.jf.bean.UserInfo;
 import com.jf.bean.UserLoginInfo;
 
 @Mapper
-public interface UserInfoDao {
+public interface  UserInfoDao {
 
 	/**
 	 * 
