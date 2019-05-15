@@ -17,15 +17,15 @@
 	    <!-- <p style="display:inline" id ="role"></p> -->
 	</div>
 	<form id="msform" >
-		<fieldset style="width: 90%; height: 500px;  /* height: 59%; */ margin: 0 5%;">
+		<fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;">
             <h2 class="fs-title">预约详情</h2>
             <h3 class="fs-subtitle">以下仅显示您最近10次的预约情况</h3>
-            <table style="border-style:dashed; border-width:1px; border-color:#74777b;width: 100%; font-size: 15px;" id="showDataId">
+            <table style="border-style:dashed; border-width:1px; border-color:#74777b;width: 110%; font-size: 15px; margin-left: -5%" id="showDataId">
             
             </table>
             <input id="register" type="button" class=" next action-button" value="我要预约"/> </br>
         </fieldset>
-        <fieldset >
+        <fieldset>
             <h2 class="fs-title">预约</h2>
             <h3 class="fs-subtitle bus">请选择您要预约的车次</h3>
             <input  type="button" class=" previous action-button" value="返回"/>
@@ -40,10 +40,11 @@
 	var username = window.localStorage.getItem('username')
 	var role = window.localStorage.getItem('role')
 	var nickname = window.localStorage.getItem('nickname')
+	var userid = window.localStorage.getItem('userid')
 	if((null == username || "undefined" == username || "" == username)  ||
 	   (null == role || "undefined" == role || "" == role) 	||
-	   (null == nickname || "undefined" == nickname || "" == nickname)){
-		debugger
+	   (null == nickname || "undefined" == nickname || "" == nickname) ||
+	   (null == userid || "undefined" == userid || "" == userid)){
 		alert("您未登录，请先登录")
 		window.location.href="toIndex"
 	}
@@ -63,16 +64,25 @@
                 async: false,
                 success: function (data) {
                     if (data != null) {
+                    	debugger
                          console.log(data)
+                         var now = new Date();
                         if (data.flag = 'success') {
                             var inf = "<table class='table'>";
-                            inf += "<tr style='height:30px'><th>车次</th><th>日期</th><th>发车时间</th><th>状态</th><th>操作</th></tr>";
+                            inf += "<tr style='height:30px'><th>车次</th><th>日期</th><th>发车</th><th>状态</th><th>操作</th></tr>";
                             for(var i=0;i<data.list.length;i++){
                             	var stu = data.list[i];
                             	stu.cancel = ''
                             	switch (stu.status){
                             	case '0':stu.status = '已取消'; break;
-                            	case '1':stu.status = '已预约'; stu.cancel = '取消预约' ;break;
+                            	case '1':
+                            	stu.status = '已预约';
+                            	var busTimeStr = stu.order_date +" " + stu.open_time;
+                            	var busTime = new Date(busTimeStr.replace(/-/g,"/"));
+                            	if(now < busTime){
+                            		stu.cancel = '取消' ;
+                            	}
+                            	break;
                             	case '2':stu.status = '已发车'; break;
                             	}
                             	inf +="<tr><td>" + stu.bus_info_name + "</td><td>" + stu.order_date + "</td><td>" + stu.open_time + "</td><td>" + stu.status+ "</td><td>"+"<a href='javascript:;' onclick=cancelOrder('"+stu.id+"')>"+stu.cancel+"</a>"+"</td></tr>";
@@ -100,7 +110,7 @@
                     for(var i=0;i<data.buslist.length;i++){
                         var bus=data.buslist[i];
                        shtml+="<div style='display: flex;' >" +
-                           " <input style='display: block; width: 15px; margin-left: 50px' name='role' type='radio' value='0' busid='"+bus.id+"'orderDate='"+bus.orderDate+"'busname='"+bus.name+"'opentime='"+bus.open_time+"'>" +
+                           " <input style='display: block; width: 15px; margin-left: 0px' name='role' type='radio' value='0' busid='"+bus.id+"'orderDate='"+bus.orderDate+"'busname='"+bus.name+"'opentime='"+bus.open_time+"'>" +
                            "<p style='font-size: 7px;margin-left: 16px'>"+bus.orderDate+" - "+bus.name+" - "+bus.open_time+"</p></div>";
                     }
                     $(".bus").after(shtml);
@@ -194,6 +204,24 @@
         var bus_info_name=order.attr("busname");
         var opentime=order.attr("opentime");
         var userid=localStorage.getItem("userid");
+        
+        if((null == userid || "undefined" == userid || "" == userid)){
+    		alert("您未登录，请先登录")
+    		window.location.href="toIndex"
+        }
+        if((null == busid || "undefined" == busid || "" == busid) ){
+        	alert("请选择车次")
+        	return
+        }
+        
+        var now = new Date()
+        var busTimeStr = orderDate +" " + opentime;
+        var busTime = new Date(busTimeStr.replace(/-/g,"/"));
+    	if(now > busTime){
+    		alert("该车次已发出，请选择其他车次")
+        	return
+    	}
+        
         $.ajax({
             url: '/bus/order/saveOrder',
             type: 'post',
