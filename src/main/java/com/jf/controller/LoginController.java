@@ -55,6 +55,12 @@ public class LoginController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/toManager", method = RequestMethod.GET)
+	public String toManager( Model model)
+			throws ClientProtocolException, IOException {
+		return "manager";
+	}
+	
 
 	/**
 	 * 

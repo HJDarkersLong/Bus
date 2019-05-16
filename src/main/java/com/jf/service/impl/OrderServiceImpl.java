@@ -5,6 +5,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 import com.jf.bean.BusInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,9 @@ import com.jf.service.OrderService;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
+	@Value("${orderCount}")
+	private String orderCount;
+	
 	@Autowired
 	private OrderDao orderDao;
 	
@@ -30,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 			return -2;//已经预约了
 		//再判断该趟车次是否已经预约满员了（45人）
 		int ordercount=orderDao.selectByBusId(orderInfo.getBus_info_id(),orderInfo.getOrder_date());
-		if(ordercount>=2)
+		if(ordercount >= Integer.parseInt(orderCount))
 			return -1;//预约人数满了
 		Integer result = orderDao.addOrder(orderInfo);
 		if(result == 1) {
@@ -53,6 +57,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<BusInfo> selectBusInfo() {
 		return orderDao.selectBusInfo();
+	}
+
+	@Override
+	public List<OrderInfo> getCurrOrderInfo(String orderDate, String bus_info_id) {
+		return orderDao.getCurrOrderInfo(orderDate, bus_info_id);
 	}
 
 

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,8 @@ import com.jf.bean.BusInfo;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +29,41 @@ import com.alibaba.fastjson.JSONObject;
 import com.jf.bean.OrderInfo;
 import com.jf.service.OrderService;
 
+import javassist.expr.NewArray;
+
 @RestController
 @RequestMapping(value = "/bus/order")
 public class OrderController {
 	
+	@Value("${orderCount}")
+	private String orderCount;
+	
 	@Autowired
 	private OrderService orderService;
+	
+	@RequestMapping(value = "getCurrOrderInfo",method = RequestMethod.GET)
+	@ResponseBody
+	public void getCurrOrderInfo (HttpServletResponse response) throws IOException {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(calendar.DATE,1);//把日期往前减少一天，若想把日期向后推一天则将负数改为正数
+        String  formatTomorrow = simpleDateFormat.format(calendar.getTime());
+		String formatToday = simpleDateFormat.format(new Date());
+		List<OrderInfo> SZtoDGtoday = orderService.getCurrOrderInfo(formatToday, "1");
+		List<OrderInfo> DGtoSZtoday = orderService.getCurrOrderInfo(formatToday, "2");
+		List<OrderInfo> SZtoDGtomorrow = orderService.getCurrOrderInfo(formatTomorrow, "1");
+		List<OrderInfo> DGtoSZtomorrow = orderService.getCurrOrderInfo(formatTomorrow, "2");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("SZtoDGtoday", SZtoDGtoday);
+		jsonObject.put("DGtoSZtoday", DGtoSZtoday);
+		jsonObject.put("SZtoDGtomorrow", SZtoDGtomorrow);
+		jsonObject.put("DGtoSZtomorrow", DGtoSZtomorrow);
+		jsonObject.put("orderCount", orderCount);
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().println(jsonObject.toJSONString());
+		response.getWriter().close();
+	}
 	
 	@RequestMapping(value = "/selectByUserId", method = RequestMethod.POST)
 	@ResponseBody
@@ -96,7 +128,7 @@ public class OrderController {
 
 
 	/**
-			* 获取bus
+	   * 获取bus
 	 * @param response
 	 * @throws IOException
 	 */

@@ -2,6 +2,8 @@ package com.jf.dao;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.alibaba.fastjson.JSONObject;
 import com.jf.bean.BusInfo;
 import org.apache.ibatis.annotations.Insert;
@@ -41,4 +43,6 @@ public interface OrderDao {
 	@Select("select * from bus_info where status=1 ")
 	List<BusInfo> selectBusInfo();
 
+	@Select("select * from user_info u  left join order_info o on (o.user_id = u.id) where o.order_date = #{orderDate} and o.bus_info_id =#{bus_info_id} and status =1 ")
+	List<OrderInfo>  getCurrOrderInfo(@Param("orderDate") String orderDate,@Param("bus_info_id") String bus_info_id);
 }

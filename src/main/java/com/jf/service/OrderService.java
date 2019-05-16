@@ -20,6 +20,8 @@ public interface OrderService {
 	int   addOrder(OrderInfo orderInfo);
 
 	List<OrderInfo> selectByUserId(String userId);
+	
+	List<OrderInfo> getCurrOrderInfo(String orderDate,String bus_info_id);
 
 	Integer cancelOrder(String orderId);
 
