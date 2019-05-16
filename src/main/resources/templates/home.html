@@ -46,7 +46,7 @@
 	   (null == nickname || "undefined" == nickname || "" == nickname) ||
 	   (null == userid || "undefined" == userid || "" == userid)){
 		alert("您未登录，请先登录")
-		window.location.href="toIndex"
+		window.location.href="/bus/login/toIndex"
 	}
 	if(role === "1"){
 		role = "员工"	
@@ -64,7 +64,7 @@
                 async: false,
                 success: function (data) {
                     if (data != null) {
-                    	debugger
+                    	
                          console.log(data)
                          var now = new Date();
                         if (data.flag = 'success') {
@@ -207,7 +207,7 @@
         
         if((null == userid || "undefined" == userid || "" == userid)){
     		alert("您未登录，请先登录")
-    		window.location.href="toIndex"
+    		window.location.href="/bus/login/toIndex"
         }
         if((null == busid || "undefined" == busid || "" == busid) ){
         	alert("请选择车次")
@@ -246,7 +246,7 @@
                     }
                     if (data.code == 1) {
                         alert("预约成功")
-                        window.location.href="toHome";
+                        window.location.href="/bus/login/toHome";
                     }
                 }
             }

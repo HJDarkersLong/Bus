@@ -35,7 +35,7 @@
             <input type="password" name="password" id="password" placeholder="密码"/> 
             <input type="password" id="rppassword" placeholder="重复密码"/> 
             <input id="register" type="button" class="action-button" value="注册"/> </br>
-            <a id="next" name="next" class="next " style="font-size: 5px">已有账号？去登录</a>
+            <a id="next" name="next" class="next " style="font-size: 15px">已有账号？去登录</a>
         </fieldset>
         <fieldset>
             <h2 class="fs-title">登录</h2>
@@ -43,7 +43,7 @@
             <input type="text" name="loginusername" id="loginusername" placeholder="请输入您的工号"/>
             <input type="password" name="loginpassword" id="loginpassword" placeholder="密码"/>
             <input id="login" name="submit" class="submit action-button" value="登录"/></br>
-            <a  name="previous" class="previous " style="font-size: 5px" >没有账号？去注册</a>
+            <a  name="previous" class="previous " style="font-size: 15px" >没有账号？去注册</a>
         </fieldset>
     </form>
 </article>
@@ -132,7 +132,6 @@
             success: function (data) {
                 if (data != null) {
                      console.log(data)
-                     debugger
                     // alert('flag : ' + data.flag + " , hintMessage : " + data.hintMessage);
                     if (data.flag === 'success') {
                         /* alert(data.hintMessage) */
@@ -140,7 +139,7 @@
                         window.localStorage.setItem('userid',data.id)
                         window.localStorage.setItem('role',data.role)
                         window.localStorage.setItem('nickname',data.nickname)
-                        window.location.href="toHome"
+                        window.location.href="/bus/login/toHome"
                     }else{
                     	alert(data.hintMessage)
                     }
