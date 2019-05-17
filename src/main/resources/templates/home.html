@@ -12,12 +12,12 @@
 <body>
 <article class="htmleaf-content">
 	<div >
-		<p style="margin-left: 33px; color: mediumseagreen; font-size: 18px;">欢迎您:</p>
-		<p style="display:inline;margin-left: 33px; color: mediumseagreen; font-size: 18px;" id ="username"></p>
+		<p style="margin-left: 33px; color: white; font-size: 18px;">欢迎您:<a href='javascript:;' onclick='logout()' style="margin-left:14rem;;color: mediumseagreen; font-size: 18px;">注销</a></p >
+		<p style="display:inline;margin-left: 33px; color: white; font-size: 18px;" id ="username"></p>
 	    <!-- <p style="display:inline" id ="role"></p> -->
 	</div>
 	<form id="msform" >
-		<fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;">
+		<fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;margin-top: -1rem">
             <h2 class="fs-title">预约详情</h2>
             <h3 class="fs-subtitle">以下仅显示您最近10次的预约情况</h3>
             <table style="border-style:dashed; border-width:1px; border-color:#74777b;width: 110%; font-size: 15px; margin-left: -5%" id="showDataId">
@@ -25,7 +25,7 @@
             </table>
             <input id="register" type="button" class=" next action-button" value="我要预约"/> </br>
         </fieldset>
-        <fieldset>
+        <fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;margin-top: -1rem">
             <h2 class="fs-title">预约</h2>
             <h3 class="fs-subtitle bus">请选择您要预约的车次</h3>
             <input  type="button" class=" previous action-button" value="返回"/>
@@ -111,7 +111,7 @@
                         var bus=data.buslist[i];
                        shtml+="<div style='display: flex;' >" +
                            " <input style='display: block; width: 15px; margin-left: 0px' name='role' type='radio' value='0' busid='"+bus.id+"'orderDate='"+bus.orderDate+"'busname='"+bus.name+"'opentime='"+bus.open_time+"'>" +
-                           "<p style='font-size: 7px;margin-left: 16px'>"+bus.orderDate+" - "+bus.name+" - "+bus.open_time+"</p></div>";
+                           "<p style='font-size: 7px;margin-left: 0px'>"+bus.orderDate+" - "+bus.name+" - "+bus.open_time+"</p></div>";
                     }
                     $(".bus").after(shtml);
                 }
@@ -141,7 +141,7 @@
                     'opacity': opacity
                 });
             },
-            duration: 800,
+            duration: 0,
             complete: function () {
                 current_fs.hide();
                 animating = false;
@@ -169,7 +169,7 @@
                     'opacity': opacity
                 });
             },
-            duration: 800,
+            duration: 0,
             complete: function () {
                 current_fs.hide();
                 animating = false;
@@ -178,6 +178,12 @@
         });
     });
 	
+    function logout(){
+    	window.localStorage.clear();
+    	window.location.href="/bus/login/toIndex";
+    	return
+    }
+    
 	function cancelOrder(orderId) {
 		$.ajax({
             url: '/bus/order/cancelOrder/'+orderId,

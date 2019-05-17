@@ -18,20 +18,20 @@
 	    <!-- <p style="display:inline" id ="role"></p> -->
 	</div>
 	<form id="msform" >
-		<fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;">
-            <h2 class="fs-title">预约情况</h2>
+		<fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;margin-top: -1rem">
+            <h2 class="fs-title" >今天预约详情</h2>
             <h3 class="fs-subtitle"><i id="checi1" ></i>车次共<i class="orderCount"></i>个座位，已预约<i id="checi1count" ></i>人，剩余<i id="checi1rem" ></i>空位</h3>
             <h3 class="fs-subtitle"><i id="checi2" ></i>车次共<i class="orderCount"></i>个座位，已预约<i id="checi2count" ></i>人，剩余<i id="checi2rem" ></i>空位</h3>
             <input id="register" type="button" class="action-button next" value="查看明天"/> </br>
-            <table style="border-style:dashed; border-width:1px; border-color:#74777b;width: 110%; font-size: 15px; margin-left: -5%" id="showDataToday">
+            <table style="" id="showDataToday">
             
             </table></br>
             <table style="border-style:dashed; border-width:1px; border-color:#74777b;width: 110%; font-size: 15px; margin-left: -5%" id="showDataToday1">
             
             </table>
         </fieldset>
-        <fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;">
-            <h2 class="fs-title">预约情况</h2>
+        <fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;margin-top: -1rem">
+            <h2 class="fs-title">明天预约情况</h2>
             <h3 class="fs-subtitle"><i id="checi3" ></i>车次共<i class="orderCount"></i>个座位，已预约<i id="checi3count" ></i>人，剩余<i id="checi3rem" ></i>空位</h3>
             <h3 class="fs-subtitle"><i id="checi4" ></i>车次共<i class="orderCount"></i>个座位，已预约<i id="checi4count" ></i>人，剩余<i id="checi4rem" ></i>空位</h3>
             <input  type="button" class=" previous action-button" value="查看今天"/>
@@ -51,6 +51,7 @@
 	var current_fs, next_fs, previous_fs;
     var left, opacity, scale;
     var animating;
+    /* $("#orderTime").html("今天"); */
     $('.next').click(function () {
         if (animating)
             return false;
@@ -70,7 +71,7 @@
                     'opacity': opacity
                 });
             },
-            duration: 800,
+            duration: 0,
             complete: function () {
                 current_fs.hide();
                 animating = false;
@@ -98,7 +99,7 @@
                     'opacity': opacity
                 });
             },
-            duration: 800,
+            duration: 0,
             complete: function () {
                 current_fs.hide();
                 animating = false;
@@ -130,7 +131,7 @@
                     if(data.DGtoSZtoday.length > 0){
                     	$("#checi1").html(data.DGtoSZtoday[0].bus_info_name);
                     }else{
-                    	$("#checi1").html("东莞--深圳")
+                    	$("#checi1").html("东莞-->深圳")
                     }
                     $("#checi1count").html(data.DGtoSZtoday.length);
                     $("#checi1rem").html(data.orderCount - data.DGtoSZtoday.length);
@@ -147,7 +148,7 @@
                     if(data.SZtoDGtoday.length > 0){
                     	$("#checi2").html(data.SZtoDGtoday[0].bus_info_name);
                     }else{
-                    	$("#checi2").html("深圳--东莞")
+                    	$("#checi2").html("深圳-->东莞")
                     }
                     $("#checi2count").html(data.SZtoDGtoday.length);
                     $("#checi2rem").html(data.orderCount - data.SZtoDGtoday.length);
@@ -218,6 +219,15 @@
 </script>
 <style type="text/css"> 
 	table tr{height:30px} 
+	table {
+			border-style:dashed; 
+			border-width:1px; 
+			border-color:#74777b;
+			width: 110%; 
+			font-size: 15px; 
+			margin-left: -5% 
+        }
+
 </style> 
 </body>
 </html>

@@ -19,31 +19,32 @@
             <li>登录</li> -->
         </ul>
         <!-- fieldsets -->
-        <fieldset>
-            <h2 class="fs-title">注册</h2>
-            <h3 class="fs-subtitle">注册一个新账号</h3>
-            <div style="display: flex;">
-                <input style="display: block; width: 15px; margin-left: 50px"
-                       name="role" type="radio" value="0"/>
-                <p style="font-size: 5px">业主</p>
-                <input style="display: block; width: 15px; margin-left: 50px"
-                       name="role" type="radio" value="1"/>
-                <p style="font-size: 5px">员工</p>
-            </div>
-            <input type="text" name="username" id="username" placeholder="请输入您的工号"/>
-            <input type="text" name="nickname" id="nickname" placeholder="姓名"/>
-            <input type="password" name="password" id="password" placeholder="密码"/> 
-            <input type="password" id="rppassword" placeholder="重复密码"/> 
-            <input id="register" type="button" class="action-button" value="注册"/> </br>
-            <a id="next" name="next" class="next " style="font-size: 15px">已有账号？去登录</a>
-        </fieldset>
-        <fieldset>
+        <fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;margin-top: -4rem">
             <h2 class="fs-title">登录</h2>
             <h3 class="fs-subtitle">登录已有账号</h3>
             <input type="text" name="loginusername" id="loginusername" placeholder="请输入您的工号"/>
             <input type="password" name="loginpassword" id="loginpassword" placeholder="密码"/>
             <input id="login" name="submit" class="submit action-button" value="登录"/></br>
-            <a  name="previous" class="previous " style="font-size: 15px" >没有账号？去注册</a>
+            <a id="next" name="next" class="next " style="font-size: 15px">没有账号？去注册</a>
+        </fieldset>
+        <fieldset style="width: 95%; height: 500px;  /* height: 59%; */ margin: 0 2.5%;margin-top: -4rem">
+            <h2 class="fs-title">注册</h2>
+            <h3 class="fs-subtitle">注册一个新账号</h3>
+            <div style="display: flex;">
+                <input style="display: block; width: 15px; margin-left: 3rem"
+                       name="role" type="radio" value="0"/>
+                <label >业主</label>
+                <!-- <p style="font-size: 5px">业主</p> -->
+                <input style="display: block; width: 15px; margin-left:3rem "
+                       name="role" type="radio" value="1"/>
+                <label >员工</label>
+            </div><br>
+            <input type="text" name="username" id="username" placeholder="请输入您的工号"/>
+            <input type="text" name="nickname" id="nickname" placeholder="姓名"/>
+            <input type="password" name="password" id="password" placeholder="密码"/> 
+            <input type="password" id="rppassword" placeholder="重复密码"/> 
+            <input id="register" type="button" class="action-button" value="注册"/> </br>
+            <a  name="previous" class="previous " style="font-size: 15px"  >已有账号？去登录</a>
         </fieldset>
     </form>
 </article>
@@ -73,7 +74,7 @@
                     'opacity': opacity
                 });
             },
-            duration: 800,
+            duration: 0,
             complete: function () {
                 current_fs.hide();
                 animating = false;
@@ -100,7 +101,7 @@
                     'opacity': opacity
                 });
             },
-            duration: 800,
+            duration: 0,
             complete: function () {
                 current_fs.hide();
                 animating = false;
@@ -134,6 +135,10 @@
                      console.log(data)
                     // alert('flag : ' + data.flag + " , hintMessage : " + data.hintMessage);
                     if (data.flag === 'success') {
+                    	if(data.role === '2'){
+                    		window.location.href="/bus/login/toManager"
+                    		return
+                    	}
                         /* alert(data.hintMessage) */
                         window.localStorage.setItem('username',loginusername)
                         window.localStorage.setItem('userid',data.id)
@@ -204,5 +209,9 @@
 
     });
 </script>
+<style type="text/css"> 
+
+
+</style> 
 </body>
 </html>
