@@ -20,7 +20,9 @@ public class BusInfo{
 
 	@Column(length = 128)
 	private String open_time;
-	
+
+	@Column(length = 128)
+	private String begin_weeks;
 	/**
 	 * 状态：预约成功，取消成功
 	 */
@@ -39,6 +41,7 @@ public class BusInfo{
 	@Column(length = 128)
 	private Timestamp createtime;
 
+	@Column(length = 128)
 	private String orderDate;
 
 	public String getId() {
@@ -97,4 +100,11 @@ public class BusInfo{
 		this.orderDate = orderDate;
 	}
 
+	public String getBegin_weeks() {
+		return begin_weeks;
+	}
+
+	public void setBegin_weeks(String begin_weeks) {
+		this.begin_weeks = begin_weeks;
+	}
 }

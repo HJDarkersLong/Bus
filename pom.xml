@@ -9,8 +9,8 @@
 		<version>2.1.3.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.xianxian</groupId>
-	<artifactId>Recover</artifactId>
+	<groupId>com.jf</groupId>
+	<artifactId>Bus</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Recover</name>
 	<description>Demo project for Spring Boot</description>
@@ -82,7 +82,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>recover</finalName>
+		<finalName>bus</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

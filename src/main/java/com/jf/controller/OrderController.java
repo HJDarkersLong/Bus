@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.jf.bean.BusInfo;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
+import org.dom4j.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -134,16 +135,25 @@ public class OrderController {
 	 */
 	@RequestMapping(value ="/getBusInfo",method = RequestMethod.POST)
 	public void getBusInfo(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		Date today = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(today);
+		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
 		List<BusInfo>  list=orderService.selectBusInfo();
 		List<BusInfo>  list_=orderService.selectBusInfo();
 		List<BusInfo>  buslist=new ArrayList<>();
 		for(BusInfo bus:list){
-			bus.setOrderDate(dateFormat(new Date(),DATE_PATTERN));
-			buslist.add(bus);
+			if(bus.getBegin_weeks().contains(String.valueOf(dayOfWeek))){
+				bus.setOrderDate(dateFormat(new Date(),DATE_PATTERN));
+				buslist.add(bus);
+			}
 		}
 		for(BusInfo bus:list_){
-			bus.setOrderDate(dateFormat(dateAdd(new Date(),1,false),DATE_PATTERN));
-			buslist.add(bus);
+			if(bus.getBegin_weeks().contains(String.valueOf((dayOfWeek+1) <=7 ?(dayOfWeek+1):1))){
+				bus.setOrderDate(dateFormat(dateAdd(new Date(),1,false),DATE_PATTERN));
+				buslist.add(bus);
+			}
 		}
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("buslist",buslist);
